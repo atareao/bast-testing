@@ -10,6 +10,20 @@ setup() {
     DIR="$( cd "$( dirname "$BATS_TEST_FILENAME" )" >/dev/null 2>&1 && pwd )"
     # make executables in src/ visible to PATH
     PATH="$DIR/../src:$PATH"
+
+    #
+    init
+}
+
+function init(){
+    if [[ ! -d /tmp/caquitas/ ]]
+    then
+        mkdir /tmp/caquitas
+    fi
+}
+
+@test "este test siempre falla" {
+    fail "este test siempre falla"
 }
 
 @test "can run our script" {
@@ -55,4 +69,11 @@ setup() {
 @test "deberia crear un archivo" {
     run sample.sh 'Hola ' 'Lorenzo' '/tmp/output'
     assert_exist /tmp/output
+}
+
+teardown(){
+    if [[ -f /tmp/output ]]
+    then
+        temp_del /tmp/output
+    fi
 }
